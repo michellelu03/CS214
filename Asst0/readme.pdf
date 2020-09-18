@@ -1,0 +1,23 @@
+SYNOPSIS
+    To use this program, please provide a file with comma-seperated values (CSV). 
+    Run this file with either '-i' or '-q' to signify if the sorting algorithm is to insertion or quick sort, respectively.
+    The sort flag should be the first command line parameter, and the file name should be the second.
+        An example format is:
+            ./fileSort -i num.txt (num.txt is a file in the same directory)
+    On success, the program will display all the values of the file sorted in ascending order, one value per line.
+    On failure, program will attempt to inform the user of what issue has occured.
+
+DESCRIPTION
+    This program reads in a file one character at a time and creates a node to a linked list with the value of that character. 
+    Once there is a comma, the linked list is aggregated into a corresponding string, which is inserted into another linked list containing all the tokens of the file.
+    After tokenizing is complete, depending on the sorting flag as well as the data type of the first token, as appropriate comparator is passed into the appropriate sorting function.
+    Quicksort is implemented recursively, taking the first node as a pivot and creating one linked list of greater values and one of smaller.
+    Quicksort is then called on the smaller linked lists. When there is no value lesser than the pivot, the val is printed.
+    Insertion sort is implemented iteratively. The first value of the linked list is considered as sorted, and going through each value after, it is compared to the values of the sorted and inserted in ascending order.
+    Once the entire linked list is traversed, each value has be relocated in its respective position.
+
+NOTES
+    Please only input files consisting of ONLY integers or ONLY strings. Failure to do so will result in nonsorted data.
+    Strings must only be lowercase, as well as not contain any other ASCII characters other than letters. No degenerate dashes (in ints) are permitted.
+    Empty tokens are permitted in the file, denoted by ',,' or if the file begins with ','. However, commas at the end of the file will not denote an empty token.
+    All white spaces in the file will be ignored. This includes tabs, spaces, and newlines.
