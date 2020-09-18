@@ -1,0 +1,46 @@
+ds1576
+ml1417
+
+We tested each individual part of this program before we combined them, making sure to
+include edge cases and testing out the warning and error messages that are within.
+
+For decompress, we borrowed the tree from the example and manually wrote some bitstrings.
+We would have an example text document that we would then run diff on to make sure that
+all the characters were exactly the same, as well as all the delimiters were working properly.
+
+For encoding, it was harder to test, because the only way you could do so was to decode
+and hope that it was the same as when you started. If there was any error, it could have been either
+decode or encode that had the issue.
+
+For build, each part of the algorithm was tested in isolation. First, the task was to be able to tokenize a file 
+and insert unique tokens into the hash table or increment an existing token's frequency. To test this, files of 
+various sizes were created with varing amounts of unique or repeating tokens, and we recorded the frequencies of 
+each token and checked if they matched to those that were on the hash table. Particularly, we focuses on 
+recording the delimiters and tokens that had punctation attached. Examples include "hello!" or a new line 
+represented by '\n' when read from the file. Once testing the hash table was successful, we had to create a 
+minheap and binary tree from the tokens. This was tested mainly through comparing the results of the return of 
+the function with a calcuated expectation. However, the main test was to ultimately create the actual huffman 
+code based on the binary tree. To do this, we created various files to test if the resulting codes were correct 
+in correlation with an online huffman code tool. With this, we began will small files with 2-3 unique tokens and then increased the size. We also eventually tested when files that contained all types of tokens such as "erhu3&", "!ndeio%s", "\n" (not a delimiter), etc.
+In addition, there was an extentsive amount of testing finding a unique escape character. That is, we made 
+test.txt files that contained "\n", "~t", "~n", etc. along with actual delimiters that would be represented as
+' ', <generated escape>t, and <generate escape>n in the Huffman Codebook. 
+
+Note: We tested the nonrecursive versions of compress, decompress, and build prior to writing and testing the recursive versions.
+
+For recursive, since we already had thoroughly tested the individual functions to build, compress, and decompress, so the main goal in testing recursive was the the traversal of the given path. We had to recursively
+apply the given operation to all the files found in the path. 
+1) First we tested the way in which we recursively traversed through the given path. The main way in 
+which we tested this was by printing all of the file names that were found in the the directory. To test this, 
+we created directories containing various amounts of subdirectories and files and ran the function in isolation. 
+2) Once we were confident with the recursive traversal through the path, the next step was to test the build 
+function. Since compress and decompress utilize the codebook from build, we tested this first to ensure it was 
+correct. We did this by distributing a known amount of tokens including the delimiters throughout a test 
+directory's files and within its subdirectories' files and so on with the subdirectories' files. Then, we ran 
+the recursive build flags and looked in the resulting HuffmanCodebook file to see if the huffman code and token 
+names (mainly delimiters with escape characters) matched what was expected. 
+3) Once build was successfully tested through numerous cases, we moved onto compress and decompress. Since we 
+based the two actions off of the the Huffman Code from build, we dispersed tokens thoroughout multiple files and 
+then kept in mind the Huffman Codes created by build and compared if the encoding or decoding were correct. To 
+do this, we ran our files to be compressed through the normal, nonrecursive compress file by file to have a 
+counterpart and vice versa for the file to be decompressed.

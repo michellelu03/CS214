@@ -1,0 +1,14 @@
+ds1576
+ml1417
+
+We tested our code by using large scale csv generators. Running both insertion and quicksort and comparing
+the results.
+
+For integer testing, we specifically tried all negative numbers, positive numbers and a mix of both.
+This was mainly in order to test for proper recognization of negative numbers
+
+String testing was done on various length strings, not as many possible edge cases here, so
+the purpose was just making sure that the list of alphabetized.
+
+large data sets up to 200 tokens were used, and empty tokens were included. Ending on a comma would not
+create an empty token as per instructions.

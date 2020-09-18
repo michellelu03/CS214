@@ -1,0 +1,48 @@
+SYNOPSIS
+    To use this program, please provide a file or directory with text files.
+    Run this file with either '-b' or '-d' or '-c' to signify whether you want to (b)uild a codebook, (d)ecompress
+    using an already existing codebook, or (c)ompress with a already existing codebook.
+    If giving a directory, please specify '-R' to recursively apply the next flag, (-b,-c,-d) to all files in the subdirectories.
+    If recursion is expected, it should be the first command line argument, followed by the operation flag as the second.
+    The third flag must be a file or directory, with -R only applicable with a directory.
+    The last flag must be an existing codebook, utilized in (d)ecompress and (c)ompress.
+        An example format is:
+            ./fileCompressor -R -c ./files HuffCodeBook.txt (Where ./files is a directory with text files)
+            ./fileCompressor -d num.txt HuffCodenum.txt (num.txt and HuffCodenum are files in the same directory)
+    On success, the program will perform the designated function: (b)uild will create a codebook file in the same directory.
+    (d)ecompress will create a file named <filename> given <filename>.hcz to decompress. (c)ompress will create a file <filename>.hcz
+    given a <filename> to compress.
+    On failure, program will attempt to inform the user of what issue has occured. This includes an invalid codebook,
+    a codebook with missing codes, files not appearing in the directory and more.
+
+DESCRIPTION
+    The time and space usage of this program depends on what process is being executed.
+    Decompress: In order to decompress, the program loads in the codebook, by first tokenizing,
+    which takes O(n) time, where n is the number of characters. Then the program creates a huffman tree based
+    on the codebook, which also takes O(n) time to create a node for every single unique word. Then, the program starts to read
+    from the compressed file in O(n) time and traversing the tree based on either a '1' or '0' read. This is O(nlogn) because
+    there are n unique words, and log(n) time to reach that word in the tree. This is not particularly size efficient, since
+    there are times when the same data is being held in different data structures. However, as soon as one data structure is finished being used,
+    it is immediately freed.
+    Compress: Works much in the same way as decompress. It takes O(n) to load the codebook, then creates a huffman tree
+    which takes O(n) time for each unique word. The actual compressing of the file is done in O(nlogn) time because it is O(n)
+    reading from the file, and O(logn) to search for that word in the binary tree. Again, the space usage is not particularly optimized
+    but the most space being used at a single point is a linked list of unique words and bitstrings, as well as the fully completed huffman tree.
+	Build: In order to build a codebook for a given file, the program must tokenize the file, which will take O(n) time, where n is the number of characters. The tokens are then inserted into a hash table which longest will take O(n) time to find a repeating token to increase its frequency count within the file. Then the program will convert the hash table into a minheap, which is also O(n) time, n for the number of total unique tokens. With n nodes, you must extract the top two nodes 2(n-1) times, and extracting will be O(logn) time due to the heapify function. From the internal nodes created from the extracting of the top two min heap nodes, the program will insert into a binary tree, which is 2(n-1). Then, the program will traverse the binary tree similar to the decompress and compress sections. Overall, the build portion is O(nlogn). This is not particularly size efficient, since there are times when the same data is being held in different data structures. However, as soon as one data structure is finished being used,it is immediately freed. This includes the linked lists that help tokenize the file, the hashtable that hold the tokens, the min heap that hold the tokens, and the binary tree.
+	Recursive: When the program receives a recursive flag, the program traverses through all the files and 
+subdirectories given the base path. From each file, tokens will be inserted into a master hash table for the 
+entire given path. From then a codebook is created similarly to the build, but in this case a more likely larger 
+hash table since there are more characters to read from each file (higher chance of more, unique tokens). If the 
+associated flag is -b, a HuffmanCodebook file will be created, and the program is finished executing. If the 
+associated flag is -c or -d, then using the created codebook, the program will compress or decompress 
+respectively in a similar manner to compressing and decompressing a single file. This will be executed for all 
+files/subdirectories in the path base. For runtime, with m files/subdirectories in the given path, we see that 
+build will be m * (nlogn). This will also be the case for -c, m * (nlogn), and -d, m * (nlogn). The space usage 
+will be similarly conducted for the 3 functions set above, however, since we are looking at more than one file 
+of the directory, we expect that there will be more tokens, so the data structures that we use will have more 
+nodes in them overall.
+NOTES
+    Please note that the only delimiters that are considered are the space, newline, and tab. Any other character attached to a word, such as punctuation
+    will be considered a separate unique token, meaning that 'happy' and 'happy!' will be different tokens in the tree.
+    This program will not accept more than one parameter for file or path, please indicate '-R' as the first flag in order to run on a directory
+    

@@ -1,0 +1,34 @@
+ds1576
+ml1417
+----------------------------------------------------------
+Test Plan:
+
+Here we will detail what the testcases are meant to test, and why we chose them
+Please keep in mind that the client and server will print to STDOUT after every operation as per instruction.
+
+1) Because the WTFserver is only supposed to run given a port number, you naturally
+need 2 arguments. We tested this because without the port number, the server will not run
+
+2) A valid port number is almost as important as having a port. Typically, ports between 0
+1024 inclusive are reserved and are thus very bad for running user servers on. Thus, the
+only valid port numbers will be from 1024 to 65535, which is the maximum port number.
+
+3) This testcase is meant to show that the server runs properly given a port number that is valid
+and to show that the configure command runs properly. After running, there should be a .configure file
+in the client folder, which will hold the two arguments passed into the command. At this point it would
+be possible to test client to server commands, and thus we started with create because none of the other
+methods work without create.
+
+4) This testcase was meant to show that if the configure file is given a different port number from the one
+the server is running on, then the client will be unable to connect to the server.
+
+5) This testcase is meant to show that the add method does not contact the server, as it is only a client side
+operation. What should be the result of this test case is that the client manifest for testProject should have
+file.txt in it. This was meant to show that add works
+
+6) This testcase is meant to show that remove, as per instructions, only removes the manifest entry for the client
+manifest. Thus, the actual file is not removed, only the manifest entry for said file.
+
+7) This testcase is meant to show that destroy completely recursively wipes the designated testProject from the 
+server. This too has no effect on the client side as per instructions.
+

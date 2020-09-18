@@ -1,0 +1,59 @@
+ds1576
+ml1417
+------------------------------------------------------------
+Test Cases:
+
+1)	./WTFserver
+	Output:	
+		"Error: expected 2 arguments, received 1"
+
+2)	./WTFserver 1
+	Output: 
+		"Error: 1 is not a valid port"
+
+3) 	./WTFserver 2020
+	./WTF configure <hostname> 2020
+	./WTF create testProject				
+	Output:	
+		"Client: .Configure file created with IP address/hostname and port number."
+		"Client: successfully connected to server."
+		"Server: New client accepted."
+		"Client: Project test was created."
+		"Client: disconnected from server."
+		"Server: Client has disconnected."
+
+4)	./WTFserver 2020 (note: server will be already running)
+	./WTF configure <hostname> 2021
+	./WTF create test2
+	Output: 
+		"Client: Could not connect to server: Connection refused"
+
+5)	./WTFserver 2020 (note: server will be already running)
+	./WTF configure <hostname> 2020
+	./WTF add testProject file.txt	(testFile.txt in test dir)
+	Output:	
+		"Client: successfully connected to server."
+		"Server: New client accepted."
+		"Client: file added successfully."
+		"Client: disconnected from server."
+		"Server: Client has disconnected."
+		
+6)	./WTFserver 2020 (note: server will be already running)
+	./WTF configure <hostname> 2020
+	./WTF remove testProject file.txt
+	Output:	
+		"Client: successfully connected to server."
+		"Server: New client accepted."
+		"Client: file removed successfully."
+		"Client: disconnected from server."
+		"Server: Client has disconnected."	
+		
+7)	./WTFserver 2020 (note: server will be already running)
+	./WTF configure <hostname> 2020
+	./WTF destroy testProject
+	Output: 		
+		"Client: successfully connected to server."
+		"Server: New client accepted."
+		"Client: Project testProject has been destroyed."
+		"Client: disconnected from server."
+		"Server: Client has disconnected."
